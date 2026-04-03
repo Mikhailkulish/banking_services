@@ -1,4 +1,5 @@
-from masks import get_mask_card_number, get_mask_account
+
+from masks import get_mask_account, get_mask_card_number # type: ignore
 
 str_bank_details = input("Введите данные о банковской карте или счете: ")
 
@@ -23,6 +24,7 @@ def mask_account_card(str_bank_details: str) -> str:
         result = get_mask_card_number(str_number)
 
     return f"{str_name} {result}"
+
 
 str_date = input("Введите дату в формате по стандарту ISO 8601: ")
 
