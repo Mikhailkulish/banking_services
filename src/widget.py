@@ -1,5 +1,5 @@
 
-from masks import get_mask_account, get_mask_card_number # type: ignore
+from masks import get_mask_account, get_mask_card_number  # type: ignore
 
 str_bank_details = input("Введите данные о банковской карте или счете: ")
 

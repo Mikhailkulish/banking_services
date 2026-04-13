@@ -4,8 +4,7 @@ card_number = int(input("Введите номер карты: "))
 def get_mask_card_number(card_number: int) -> str:
     """Функция, которая выдает маску карты"""
     card_number_str: str = str(card_number)
-    mask_card_number: str = (card_number_str[:4] + " " + card_number_str[4:6] + "** **** " +
-                             card_number_str[12:])
+    mask_card_number: str = (card_number_str[:4] + " " + card_number_str[4:6] + "** **** " + card_number_str[12:])
 
     return mask_card_number
 
