@@ -1,4 +1,3 @@
-
 def get_mask_card_number(card_number: int | str | None) -> str:
     """Функция, которая выдает маску карты"""
     if card_number is None:
@@ -15,9 +14,7 @@ def get_mask_card_number(card_number: int | str | None) -> str:
     if len(card_number_str) != 16:
         return f"Номер карты должен состоять из 16 цифр. Получено {len(card_number_str)}"
 
-    mask_card_number: str = (card_number_str[:4] + " " +
-                            card_number_str[4:6] + "** **** " +
-                            card_number_str[12:])
+    mask_card_number: str = card_number_str[:4] + " " + card_number_str[4:6] + "** **** " + card_number_str[12:]
 
     return mask_card_number
 
@@ -35,7 +32,6 @@ def get_mask_account(account_number: str) -> str:
 
     except Exception as e:
         raise TypeError(f"Невозможно преобразовать в строку: {e}")
-
 
     if not account_number_str:
         raise ValueError("Номер счета не может быть пустым")
