@@ -1,11 +1,12 @@
-
 from masks import get_mask_account, get_mask_card_number  # type: ignore
-
-str_bank_details = input("Введите данные о банковской карте или счете: ")
 
 
 def mask_account_card(str_bank_details: str) -> str:
     """Функция обрабатывает информацию о картах и счетах"""
+    if not str_bank_details or not isinstance(str_bank_details, str):
+
+        return ""
+
     list_bank_details = str_bank_details.split()
     list_name = []
     list_number = []
@@ -18,15 +19,15 @@ def mask_account_card(str_bank_details: str) -> str:
     str_name = " ".join(list_name)
     str_number = "".join(list_number)
 
+    if not str_number:
+        return str_name
+
     if "счет" in str_name.lower() or "счёт" in str_name.lower():
         result = get_mask_account(str_number)
     else:
         result = get_mask_card_number(str_number)
 
     return f"{str_name} {result}"
-
-
-str_date = input("Введите дату в формате по стандарту ISO 8601: ")
 
 
 def get_date(str_date: str) -> str:
