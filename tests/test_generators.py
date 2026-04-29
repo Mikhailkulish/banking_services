@@ -85,20 +85,23 @@ def test_filter_by_currency_malformed_data() -> None:
 def test_filter_by_currency_invalid_inputs() -> None:
     """Тестирует на неверные типы входных параметров"""
     with pytest.raises(TypeError):
-        list(filter_by_currency("not a list", "USD"))
+        list(filter_by_currency("not a list", "USD"))  # type: ignore
 
     with pytest.raises(TypeError):
-        list(filter_by_currency([], 123))
+        list(filter_by_currency([], 123))  # type: ignore
 
     with pytest.raises(ValueError):
         list(filter_by_currency([], ""))
 
 
-@pytest.mark.parametrize("currency,expected_ids", [
-    ("USD", [1, 3]),
-    ("EUR", [2]),
-    ("GBP", []),
-])
+@pytest.mark.parametrize(
+    "currency,expected_ids",
+    [
+        ("USD", [1, 3]),
+        ("EUR", [2]),
+        ("GBP", []),
+    ],
+)
 def test_filter_by_currency_parametrized(currency: str, expected_ids: List[int]) -> None:
     """Тестирует с  параметризацией для разных валют"""
     transactions: List[Dict[str, Any]] = [
@@ -119,7 +122,7 @@ def test_transaction_descriptions_normal_case() -> None:
     transactions: List[Dict[str, str]] = [
         {"description": "Покупка продуктов"},
         {"description": "Оплата коммунальных услуг"},
-        {"description": "Перевод другу"}
+        {"description": "Перевод другу"},
     ]
 
     result = list(transaction_descriptions(transactions))
@@ -138,9 +141,7 @@ def test_transaction_descriptions_empty_list() -> None:
 
 def test_transaction_descriptions_single_transaction() -> None:
     """Тестирует при вводе данных с одной транзакцией"""
-    transactions: List[Dict[str, str]] = [
-        {"description": "Единственная транзакция"}
-    ]
+    transactions: List[Dict[str, str]] = [{"description": "Единственная транзакция"}]
 
     result = list(transaction_descriptions(transactions))
 
@@ -152,7 +153,7 @@ def test_transaction_descriptions_missing_key() -> None:
     transactions: List[Dict[str, Any]] = [
         {"description": "Нормальная транзакция"},
         {"amount": 1000},  # Нет description
-        {"description": "Еще одна нормальная"}
+        {"description": "Еще одна нормальная"},
     ]
 
     with pytest.raises(KeyError, match="отсутствует ключ 'description'"):
@@ -162,19 +163,15 @@ def test_transaction_descriptions_missing_key() -> None:
 def test_transaction_descriptions_not_a_list() -> None:
     """Тестирует при вводе, если передан не список"""
     with pytest.raises(TypeError, match="transactions должен быть списком"):
-        list(transaction_descriptions("not a list"))
+        list(transaction_descriptions("not a list"))  # type: ignore
 
 
 def test_transaction_descriptions_element_not_dict() -> None:
     """Тестирует работу, если элемент списка не является словарем"""
-    transactions = [
-        {"description": "OK"},
-        "not a dict",  # type: ignore
-        {"description": "OK"}
-    ]
+    transactions = [{"description": "OK"}, "not a dict", {"description": "OK"}]  # type: ignore
 
     with pytest.raises(TypeError, match="Каждая транзакция должна быть словарем"):
-        list(transaction_descriptions(transactions))
+        list(transaction_descriptions(transactions))  # type: ignore
 
 
 # Тестирование функции card_number_generator
@@ -192,11 +189,7 @@ def test_generator_returns_range_of_numbers() -> None:
     generator: Iterator[str] = card_number_generator(1, 3)
     results: list[str] = list(generator)
 
-    expected: list[str] = [
-        "0000 0000 0000 0001",
-        "0000 0000 0000 0002",
-        "0000 0000 0000 0003"
-    ]
+    expected: list[str] = ["0000 0000 0000 0001", "0000 0000 0000 0002", "0000 0000 0000 0003"]
     assert results == expected
 
 
@@ -225,6 +218,6 @@ def test_generator_raises_error_when_negative_start() -> None:
 
 def test_generator_raises_error_when_exceeds_maximum() -> None:
     """Тестирует на ошибку при превышении максимального допустимого значения"""
-    max_card: int = 10 ** 16 - 1
+    max_card: int = 10**16 - 1
     with pytest.raises(ValueError, match="fin не может превышать"):
         list(card_number_generator(max_card, max_card + 1))
