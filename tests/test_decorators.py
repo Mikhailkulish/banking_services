@@ -61,7 +61,7 @@ def test_log_to_file_multiple_calls(tmp_path):
         increment(i)
 
     content = log_file.read_text()
-    lines = content.strip().split('\n')
+    lines = content.strip().split("\n")
 
     assert len(lines) == 6
     assert "Начало increment" in lines[0]
@@ -110,7 +110,7 @@ def test_file_opens_in_append_mode(tmp_path):
     log_file = tmp_path / "test.log"
 
     # Записываем что-то в файл
-    with open(log_file, 'w') as f:
+    with open(log_file, "w") as f:
         f.write("Existing content\n")
 
     @log(filename=str(log_file))
@@ -120,7 +120,7 @@ def test_file_opens_in_append_mode(tmp_path):
     func()
 
     # Проверяем, что новый контент добавился, а старый остался
-    with open(log_file, 'r') as f:
+    with open(log_file, "r") as f:
         content = f.read()
 
     assert "Existing content" in content
@@ -139,7 +139,7 @@ def test_file_closed_after_execution(tmp_path):
     func()
 
     # Проверяем, что файл создан и содержит данные
-    with open(log_file, 'r') as f:
+    with open(log_file, "r") as f:
         content = f.read()
 
     assert "Начало func" in content
@@ -233,7 +233,7 @@ def test_log_output_format(capsys):
     test_func()
 
     captured = capsys.readouterr()
-    lines = captured.out.strip().split('\n')
+    lines = captured.out.strip().split("\n")
 
     assert len(lines) == 2
     assert "Начало test_func" in lines[0]
@@ -251,7 +251,7 @@ def test_concurrent_calls(tmp_path):
     results = [process(i) for i in range(5)]
     assert results == [0, 2, 4, 6, 8]
 
-    with open(log_file, 'r') as f:
+    with open(log_file, "r") as f:
         content = f.read()
 
     for i in range(5):
@@ -263,11 +263,12 @@ def test_file_permission_error(tmp_path):
     log_file = tmp_path / "protected.log"
 
     # Создаем файл
-    with open(log_file, 'w') as f:
+    with open(log_file, "w") as f:
         f.write("test")
 
     # Делаем файл только для чтения (используем chmod через десятичное число)
     import stat
+
     log_file.chmod(stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
     @log(filename=str(log_file))
@@ -306,7 +307,7 @@ def test_log_to_file_with_newline_in_result(tmp_path):
     result = newline_func()
     assert result == "Hello\nWorld"
 
-    with open(log_file, 'r') as f:
+    with open(log_file, "r") as f:
         content = f.read()
 
     # Проверяем что лог содержит строку (символы новой строки могут быть экранированы или нет)

@@ -3,7 +3,7 @@ import time
 from typing import Optional, Any, Callable, TypeVar, cast
 
 # Объявляем тип для оборачиваемой функции
-F = TypeVar('F', bound=Callable[..., Any])
+F = TypeVar("F", bound=Callable[..., Any])
 
 
 def log(filename: Optional[str] = None) -> Callable[[F], F]:
@@ -13,7 +13,7 @@ def log(filename: Optional[str] = None) -> Callable[[F], F]:
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             # Открываем файл, если указано имя
-            out = open(filename, 'a') if filename else None
+            out = open(filename, "a") if filename else None
 
             try:
                 # Логируем начало выполнения
