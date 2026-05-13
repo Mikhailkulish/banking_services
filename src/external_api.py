@@ -5,6 +5,11 @@ from dotenv import load_dotenv
 # Загружаем переменные из .env файла
 load_dotenv()
 
+API_KEY = os.getenv('EXCHANGE_RATES_API_KEY')
+BASE_URL = "https://api.apilayer.com/exchangerates_data"
+
+_cache = {}
+
 
 def get_exchange_rate(currency: str) -> float:
     """Запрашивает курс валюты для конвертации суммы в рублях"""
