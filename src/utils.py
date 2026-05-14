@@ -10,7 +10,7 @@ def load_transactions(file_path: str) -> List[Dict[str, Any]]:
         if os.path.getsize(file_path) == 0:
             return []
 
-        with open(file_path, 'r', encoding='utf-8') as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             data = json.load(file)
 
         # Проверяем, что данные являются списком
@@ -19,6 +19,6 @@ def load_transactions(file_path: str) -> List[Dict[str, Any]]:
         else:
             return []
 
-    except (json.JSONDecodeError, IOError, OSError):
+    except json.JSONDecodeError, IOError, OSError:
         # Возвращаем пустой список при любой ошибке чтения/парсинга
         return []

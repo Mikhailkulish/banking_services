@@ -5,16 +5,16 @@ from dotenv import load_dotenv
 # Загружаем переменные из .env файла
 load_dotenv()
 
-API_KEY = os.getenv('EXCHANGE_RATES_API_KEY')
-BASE_URL = os.getenv('EXCHANGE_RATES_BASE_URL')
+API_KEY = os.getenv("EXCHANGE_RATES_API_KEY")
+BASE_URL = os.getenv("EXCHANGE_RATES_BASE_URL")
 
 _cache = {}
 
 
 def convert_to_rub(transaction: dict) -> float:
     """Принимает транзакцию в виде словаря и возвращает сумму в рублях"""
-    amount = transaction.get('amount')
-    currency = transaction.get('currency', 'RUB').upper()
+    amount = transaction.get("amount")
+    currency = transaction.get("currency", "RUB").upper()
 
     # Проверки корректности входных данных
     if not isinstance(amount, (int, float)):
@@ -32,10 +32,7 @@ def convert_to_rub(transaction: dict) -> float:
         if currency not in _cache:
             headers = {"apikey": API_KEY}
             url = f"{BASE_URL}/latest"
-            params = {
-                "base": currency,
-                "symbols": "RUB"
-            }
+            params = {"base": currency, "symbols": "RUB"}
 
             try:
                 response = requests.get(url, headers=headers, params=params, timeout=5)
