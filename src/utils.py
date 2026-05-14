@@ -5,12 +5,11 @@ from typing import List, Dict, Any
 
 def load_transactions(file_path: str) -> List[Dict[str, Any]]:
     """Загружает финансовые транзакции из JSON-файла"""
-    file_path = 'data/operations.json'
-
-    if os.path.getsize(file_path) == 0:
-        return []
 
     try:
+        if os.path.getsize(file_path) == 0:
+            return []
+
         with open(file_path, 'r', encoding='utf-8') as file:
             data = json.load(file)
 
