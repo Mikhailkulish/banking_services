@@ -1,8 +1,8 @@
+from typing import Any, Dict, Iterator, List
+
 import pytest
 
-from typing import List, Dict, Any, Iterator
-
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.generators import card_number_generator, filter_by_currency, transaction_descriptions
 
 
 # Тестирование функции filter_by_currency

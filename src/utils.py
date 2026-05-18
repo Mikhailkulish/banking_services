@@ -1,14 +1,14 @@
 import json
-import os
 import logging
-from typing import List, Dict, Any
+import os
+from typing import Any, Dict, List
 
 # Указываем путь к существующей папке с логами
 log_dir = "logs"
 log_file = os.path.join(log_dir, "utils.log")
 
 # Очищаем файл логов при запуске (перезаписываем)
-with open(log_file, 'w') as f:
+with open(log_file, "w") as f:
     pass
 
 # Создаем логгер
@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Создаем обработчик файла
-file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+file_handler = logging.FileHandler(log_file, mode="a", encoding="utf-8")
 file_handler.setLevel(logging.INFO)
 
 # Создаем форматтер
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(formatter)
 
 # Добавляем обработчик к логгеру
@@ -52,7 +52,8 @@ def load_transactions(file_path: str) -> List[Dict[str, Any]]:
             return data
         else:
             logger.warning(
-                f"Данные в файле {file_path} не являются списком (тип: {type(data).__name__}). Возвращаем пустой список")
+                f"Данные в файле {file_path} не являются списком (тип: {type(data).__name__}). Возвращаем пустой список"
+            )
             return []
 
     except json.JSONDecodeError as e:

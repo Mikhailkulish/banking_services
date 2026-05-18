@@ -6,7 +6,7 @@ log_dir = "logs"
 log_file = os.path.join(log_dir, "masks.log")
 
 # Очищаем файл логов при запуске (перезаписываем)
-with open(log_file, 'w') as f:
+with open(log_file, "w") as f:
     pass
 
 # Создаем логгер
@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 # Создаем обработчик файла
-file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+file_handler = logging.FileHandler(log_file, mode="a", encoding="utf-8")
 file_handler.setLevel(logging.INFO)
 
 # Создаем форматтер
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 file_handler.setFormatter(formatter)
 
 # Добавляем обработчик к логгеру
