@@ -1,6 +1,8 @@
-import pytest
 import json
 from unittest.mock import mock_open, patch
+
+import pytest
+
 from src.utils import load_transactions  # замените your_module на имя вашего модуля
 
 

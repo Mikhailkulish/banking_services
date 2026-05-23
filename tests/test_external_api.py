@@ -1,8 +1,10 @@
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 import requests
-from src.external_api import convert_to_rub
+
 import src.external_api  # импортируем модуль целиком для patch.object
+from src.external_api import convert_to_rub
 
 
 @pytest.fixture(autouse=True)

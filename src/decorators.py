@@ -1,6 +1,6 @@
 import functools
 import time
-from typing import Optional, Any, Callable, TypeVar, cast
+from typing import Any, Callable, Optional, TypeVar, cast
 
 # Объявляем тип для оборачиваемой функции
 F = TypeVar("F", bound=Callable[..., Any])

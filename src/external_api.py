@@ -1,4 +1,5 @@
 import os
+
 import requests
 from dotenv import load_dotenv
 
@@ -47,10 +48,7 @@ def convert_to_rub(transaction: dict) -> float:
         # Проверяем кэш
         if currency not in _cache:
             url = f"{BASE_URL}/latest"
-            params = {
-                "base": currency,
-                "symbols": "RUB"
-            }
+            params = {"base": currency, "symbols": "RUB"}
             headers = {"apikey": API_KEY}
 
             try:
