@@ -95,7 +95,3 @@ def load_transactions_excel(file_path=None) -> List[Dict]:
 
     except Exception as e:
         raise Exception(f"Ошибка при чтении Excel файла {actual_file_path}: {e}")
-
-
-if __name__ == "__main__":
-    print(load_transactions_excel(file_path=None))
