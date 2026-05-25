@@ -1,6 +1,8 @@
 import csv
-import pandas as pd
 import os
+from typing import Dict, List
+
+import pandas as pd
 
 
 def load_transactions(file_path=None) -> List[Dict]:
@@ -18,7 +20,7 @@ def load_transactions(file_path=None) -> List[Dict]:
 
     # Читаем CSV файл
     transactions = []
-    with open(file_path, 'r', encoding='utf-8') as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         for row in reader:
             # Очищаем значения от пробелов
@@ -28,7 +30,7 @@ def load_transactions(file_path=None) -> List[Dict]:
                 clean_value = value.strip() if value else value
 
                 # Пробуем преобразовать amount в число
-                if clean_key == 'amount' and clean_value:
+                if clean_key == "amount" and clean_value:
                     try:
                         clean_value = float(clean_value)
                     except ValueError:
@@ -50,7 +52,7 @@ def load_transactions_excel(file_path=None) -> List[Dict]:
         file_path = os.path.join(project_root, "data", "transactions_excel")
 
     # Проверяем существование файла (проверяем оба возможных расширения)
-    excel_extensions = ['.xlsx', '.xls', '.xlsm']
+    excel_extensions = [".xlsx", ".xls", ".xlsm"]
     actual_file_path = None
 
     for ext in excel_extensions:

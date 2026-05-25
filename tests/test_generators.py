@@ -604,7 +604,7 @@ def single_transaction() -> List[Dict[str, str]]:
 
 
 @pytest.fixture
-def empty_transactions() -> List[Dict]:
+def empt_transactions() -> List[Dict]:
     """Фикстура с пустым списком"""
     return []
 
@@ -632,9 +632,9 @@ def test_transaction_descriptions_normal_case(normal_transactions: List[Dict[str
     assert result == ["Покупка продуктов", "Оплата коммунальных услуг", "Перевод другу"]
 
 
-def test_transaction_descriptions_empty_list(empty_transactions: List[Dict]) -> None:
+def test_transaction_descriptions_empty_list(empt_transactions: List[Dict]) -> None:
     """Тестирует при пустом списке транзакций"""
-    result = list(transaction_descriptions(empty_transactions))
+    result = list(transaction_descriptions(empt_transactions))
     assert result == []
 
 
