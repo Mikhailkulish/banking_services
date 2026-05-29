@@ -5,9 +5,9 @@ from unittest.mock import Mock, patch
 import pandas as pd
 import pytest
 
-from src.reading_transactions import load_transactions, load_transactions_excel
+from src.reading_transactions import load_transactions_csv, load_transactions_excel
 
-# Тестирование функции load_transactions
+# Тестирование функции load_transactions_csv
 
 
 @patch("os.path.exists")
@@ -16,7 +16,7 @@ def test_file_not_found(mock_exists: Mock) -> None:
     mock_exists.return_value = False
 
     with pytest.raises(FileNotFoundError) as exc_info:
-        load_transactions("/nonexistent/path.csv")
+        load_transactions_csv("/nonexistent/path.csv")
 
     assert "Файл не найден" in str(exc_info.value)
 
@@ -52,7 +52,7 @@ def test_successful_load_with_default_path(mock_dict_reader: Mock, mock_open_fil
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert len(result) == 2
     assert result[0]["amount"] == 1500.50
@@ -73,7 +73,7 @@ def test_custom_path_handling(mock_dict_reader: Mock, mock_open_file: Mock, mock
     mock_dict_reader.return_value = mock_reader
 
     custom_path: str = "/custom/path/transactions.csv"
-    load_transactions(custom_path)
+    load_transactions_csv(custom_path)
 
     mock_open_file.assert_called_once_with(custom_path, "r", encoding="utf-8")
 
@@ -95,7 +95,7 @@ def test_amount_conversion_to_float(mock_dict_reader: Mock, mock_open_file: Mock
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert isinstance(result[0]["amount"], float)
     assert result[0]["amount"] == 1500.50
@@ -116,7 +116,7 @@ def test_invalid_amount_handling(mock_dict_reader: Mock, mock_open_file: Mock, m
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert isinstance(result[0]["amount"], str)
     assert result[0]["amount"] == "invalid_amount"
@@ -136,7 +136,7 @@ def test_string_stripping(mock_dict_reader: Mock, mock_open_file: Mock, mock_exi
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert "date" in result[0]
     assert "description" in result[0]
@@ -159,7 +159,7 @@ def test_empty_values_handling(mock_dict_reader: Mock, mock_open_file: Mock, moc
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert result[0]["description"] == ""
     assert result[0]["amount"] == ""
@@ -178,7 +178,7 @@ def test_returns_list_of_dicts(mock_dict_reader: Mock, mock_open_file: Mock, moc
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert isinstance(result, list)
     assert all(isinstance(item, dict) for item in result)
@@ -203,7 +203,7 @@ def test_default_path_construction(
     mock_reader.__iter__ = Mock(return_value=iter([]))
     mock_dict_reader.return_value = mock_reader
 
-    load_transactions()
+    load_transactions_csv()
 
     expected_path: str = os.path.join("/project", "data", "transactions.csv")
     mock_open_file.assert_called_once_with(expected_path, "r", encoding="utf-8")
@@ -222,7 +222,7 @@ def test_missing_amount_field(mock_dict_reader: Mock, mock_open_file: Mock, mock
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert "amount" not in result[0]
     assert result[0]["date"] == "2024-01-15"
@@ -241,7 +241,7 @@ def test_numeric_values_other_than_amount(mock_dict_reader: Mock, mock_open_file
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert isinstance(result[0]["quantity"], str)
     assert isinstance(result[0]["price"], str)
@@ -260,7 +260,7 @@ def test_empty_file_with_only_headers(mock_dict_reader: Mock, mock_open_file: Mo
     mock_reader.__iter__ = Mock(return_value=iter([]))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert result == []
 
@@ -294,7 +294,7 @@ def test_amount_conversion_various_formats(
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert isinstance(result[0]["amount"], expected_type)
 
@@ -323,7 +323,7 @@ def test_key_stripping_variations(
     mock_reader.__iter__ = Mock(return_value=iter(data))
     mock_dict_reader.return_value = mock_reader
 
-    result: List[Dict[str, Any]] = load_transactions()
+    result: List[Dict[str, Any]] = load_transactions_csv()
 
     assert expected_key in result[0]
     assert result[0][expected_key] == "test_value"

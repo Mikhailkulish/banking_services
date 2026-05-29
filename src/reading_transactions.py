@@ -5,7 +5,7 @@ from typing import Dict, List
 import pandas as pd
 
 
-def load_transactions(file_path=None) -> List[Dict]:
+def load_transactions_csv(file_path=None) -> List[Dict]:
     """Считывает финансовые операции из CSV файла, выдает список словарей с транзакциями"""
     # Если путь не указан, формируем путь по умолчанию
     if file_path is None:
