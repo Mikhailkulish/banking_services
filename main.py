@@ -1,7 +1,7 @@
-from src.utils import load_transactions
-from src.reading_transactions import load_transactions_csv, load_transactions_excel
-from src.processing import filter_by_state, sort_by_date
 from src.generators import filter_by_currency, transaction_descriptions
+from src.processing import filter_by_state, sort_by_date
+from src.reading_transactions import load_transactions_csv, load_transactions_excel
+from src.utils import load_transactions
 from src.widget import get_date, mask_account_card
 
 
@@ -55,20 +55,22 @@ def main() -> None:
             print("Отсортировать по возрастанию или по убыванию?")
             transaction_dates_user_direction = input("Пользователь: ").lower()
             if transaction_dates_user_direction == "по возрастанию":
-                transaction_sorted_date = sort_by_date(filter_data, descending=False)  # Исправлено: False = по возрастанию
+                transaction_sorted_date = sort_by_date(
+                    filter_data, descending=False
+                )  # Исправлено: False = по возрастанию
                 break
             elif transaction_dates_user_direction == "по убыванию":
                 transaction_sorted_date = sort_by_date(filter_data, descending=True)  # Исправлено: True = по убыванию
                 break
             else:
-                print(f'Выбор {transaction_dates_user_direction} отсутствует. Выберите направление сортировки')
+                print(f"Выбор {transaction_dates_user_direction} отсутствует. Выберите направление сортировки")
                 # Продолжаем цикл, не выходя из него
                 continue
         elif transaction_dates_user == "нет":  # Исправлено: было transaction_dates_user_direction
             transaction_sorted_date = filter_data
             break
         else:
-            print(f'Выбор {transaction_dates_user} отсутствует. Укажите необходимость сортировки по дате')
+            print(f"Выбор {transaction_dates_user} отсутствует. Укажите необходимость сортировки по дате")
             transaction_dates_user = input("Пользователь: ").lower()
 
     print("Программа: Выводить только рублевые транзакции? Да/Нет")
@@ -122,8 +124,8 @@ def main() -> None:
             date_str = transaction.get("date", "")
             try:
                 formatted_date = get_date(date_str)
-            except (IndexError, TypeError, KeyError):
-                formatted_date = date_str.split('T')[0] if 'T' in date_str else date_str
+            except IndexError, TypeError, KeyError:
+                formatted_date = date_str.split("T")[0] if "T" in date_str else date_str
 
             # Получаем описание
             description = transaction.get("description", "Описание отсутствует")

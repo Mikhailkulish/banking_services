@@ -579,9 +579,7 @@ def test_excel_read_error(mock_exists: Mock) -> None:
 @patch("os.path.abspath")
 @patch("os.path.exists")
 @patch("pandas.read_excel")
-def test_default_path_constr(
-    mock_read_excel: Mock, mock_exists: Mock, mock_abspath: Mock, mock_dirname: Mock
-) -> None:
+def test_default_path_constr(mock_read_excel: Mock, mock_exists: Mock, mock_abspath: Mock, mock_dirname: Mock) -> None:
     """Тест: правильное построение пути по умолчанию"""
 
     # Просто говорим, что файл существует для любого пути

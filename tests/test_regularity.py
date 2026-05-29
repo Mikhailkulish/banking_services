@@ -1,8 +1,9 @@
-import pytest
 import re
-from typing import List, Dict, Any
-from src.regularity import process_bank_search, count_operations_by_category
+from typing import Any, Dict, List
 
+import pytest
+
+from src.regularity import count_operations_by_category, process_bank_search
 
 # Тестирование функции process_bank_search
 # ТЕСТОВЫЕ ДАННЫЕ
@@ -86,12 +87,15 @@ def test_unicode() -> None:
 
 
 # Параметризованный тест для компактности
-@pytest.mark.parametrize("search,expected_count", [
-    ("банк", 4),
-    ("Сбер", 1),
-    ("КРЕДИТ", 1),
-    ("xyz", 0),
-])
+@pytest.mark.parametrize(
+    "search,expected_count",
+    [
+        ("банк", 4),
+        ("Сбер", 1),
+        ("КРЕДИТ", 1),
+        ("xyz", 0),
+    ],
+)
 def test_multiple_queries(search: str, expected_count: int) -> None:
     """Тестирование разных поисковых запросов"""
     result: List[Dict[str, Any]] = process_bank_search(sample_data, search)
@@ -143,16 +147,14 @@ def test_case_insensitive_matching() -> None:
 def test_category_matching_priority() -> None:
     """Операция должна попадать только в первую подходящую категорию"""
     categories: List[str] = ["супермаркет", "магнит"]  # обе категории есть в описании
-    data: List[Dict[str, Any]] = [
-        {"id": 1, "description": "Супермаркет Магнит"}  # подходит под обе категории
-    ]
+    data: List[Dict[str, Any]] = [{"id": 1, "description": "Супермаркет Магнит"}]  # подходит под обе категории
     result: Dict[str, int] = count_operations_by_category(data, categories)
 
     assert result["супермаркет"] == 1  # попала в первую категорию
     assert result["магнит"] == 0  # не попала во вторую
 
 
-def test_empty_description() -> None:
+def test_empty_descript() -> None:
     """Операции с пустым description не попадают ни в одну категорию"""
     categories: List[str] = ["супермаркет", "кафе"]
     data: List[Dict[str, Any]] = [
@@ -179,7 +181,7 @@ def test_missing_description_key() -> None:
     assert result["супермаркет"] == 0
 
 
-def test_empty_data() -> None:
+def test_empty_dat() -> None:
     """Пустой список операций"""
     categories: List[str] = ["супермаркет", "кафе"]
     result: Dict[str, int] = count_operations_by_category([], categories)
@@ -198,9 +200,7 @@ def test_empty_categories() -> None:
 def test_partial_word_match() -> None:
     """Поиск по части слова (вхождение подстроки)"""
     categories: List[str] = ["продукты", "маркет"]
-    data: List[Dict[str, Any]] = [
-        {"id": 1, "description": "Супермаркет Пятерочка"}  # содержит "маркет"
-    ]
+    data: List[Dict[str, Any]] = [{"id": 1, "description": "Супермаркет Пятерочка"}]  # содержит "маркет"
     result: Dict[str, int] = count_operations_by_category(data, categories)
 
     assert result["продукты"] == 0  # не содержит "продукты"
@@ -236,9 +236,7 @@ def test_no_matches() -> None:
 def test_category_not_in_result() -> None:
     """Категории, которых нет в данных, должны иметь значение 0"""
     categories: List[str] = ["супермаркет", "транспорт", "связь"]
-    data: List[Dict[str, Any]] = [
-        {"id": 1, "description": "Супермаркет"}
-    ]
+    data: List[Dict[str, Any]] = [{"id": 1, "description": "Супермаркет"}]
     result: Dict[str, int] = count_operations_by_category(data, categories)
 
     assert result["супермаркет"] == 1
@@ -274,7 +272,7 @@ def test_unicode_categories() -> None:
     assert result["аптека"] == 1
 
 
-def test_preserves_original_data() -> None:
+def test_preserves_original_dat() -> None:
     """Функция не должна изменять исходные данные"""
     original_data: List[Dict[str, Any]] = sample_data_categories.copy()
     categories: List[str] = ["супермаркет"]
@@ -292,28 +290,34 @@ def test_returns_new_dict() -> None:
 
 
 # Параметризованные тесты
-@pytest.mark.parametrize("categories,expected", [
-    (["супермаркет"], {"супермаркет": 2}),
-    (["кафе"], {"кафе": 2}),
-    (["аптека"], {"аптека": 1}),
-    (["транспорт"], {"транспорт": 0}),
-    (["супермаркет", "кафе"], {"супермаркет": 2, "кафе": 2}),
-])
+@pytest.mark.parametrize(
+    "categories,expected",
+    [
+        (["супермаркет"], {"супермаркет": 2}),
+        (["кафе"], {"кафе": 2}),
+        (["аптека"], {"аптека": 1}),
+        (["транспорт"], {"транспорт": 0}),
+        (["супермаркет", "кафе"], {"супермаркет": 2, "кафе": 2}),
+    ],
+)
 def test_parametrized_counts(categories: List[str], expected: Dict[str, int]) -> None:
     """Параметризованный тест для разных категорий"""
     result: Dict[str, int] = count_operations_by_category(sample_data_categories, categories)
     assert result == expected
 
 
-@pytest.mark.parametrize("description,category,expected", [
-    ("Супермаркет", "супермаркет", 1),
-    ("", "супермаркет", 0),
-    (None, "супермаркет", 0),
-    ("АЗС Лукойл", "азс", 1),  # изменено: категория "азс" вместо "транспорт"
-    ("Кафе", "кафе", 1),
-    ("Макдоналдс", "макдоналдс", 1),  # дополнительный тест
-    ("Пятерочка", "пятерочка", 1),  # дополнительный тест
-])
+@pytest.mark.parametrize(
+    "description,category,expected",
+    [
+        ("Супермаркет", "супермаркет", 1),
+        ("", "супермаркет", 0),
+        (None, "супермаркет", 0),
+        ("АЗС Лукойл", "азс", 1),  # изменено: категория "азс" вместо "транспорт"
+        ("Кафе", "кафе", 1),
+        ("Макдоналдс", "макдоналдс", 1),  # дополнительный тест
+        ("Пятерочка", "пятерочка", 1),  # дополнительный тест
+    ],
+)
 def test_single_transaction(description: Any, category: str, expected: int) -> None:
     """Тест на одной транзакции с разными description"""
     data: List[Dict[str, Any]] = [{"id": 1, "description": description}]
@@ -325,12 +329,11 @@ def test_single_transaction(description: Any, category: str, expected: int) -> N
 # Тест на производительность
 def test_performance_large_dataset() -> None:
     """Проверка производительности на большом наборе данных"""
-    large_data: List[Dict[str, Any]] = [
-        {"id": i, "description": f"Супермаркет {i}"} for i in range(10000)
-    ]
+    large_data: List[Dict[str, Any]] = [{"id": i, "description": f"Супермаркет {i}"} for i in range(10000)]
     categories: List[str] = ["супермаркет", "кафе"]
 
     import time
+
     start: float = time.time()
     result: Dict[str, int] = count_operations_by_category(large_data, categories)
     end: float = time.time()

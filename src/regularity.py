@@ -1,5 +1,5 @@
 import re
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 
 def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[str, Any]]:
@@ -13,8 +13,7 @@ def process_bank_search(data: List[Dict[str, Any]], search: str) -> List[Dict[st
 
     # Фильтруем список, оставляя только те словари, где description содержит search
     result = [
-        item for item in data
-        if isinstance(item.get('description'), str) and pattern.search(item['description'])
+        item for item in data if isinstance(item.get("description"), str) and pattern.search(item["description"])
     ]
 
     return result
@@ -28,9 +27,9 @@ def count_operations_by_category(data: List[Dict[str, Any]], categories: List[st
     # Проходим по всем операциям
     for transaction in data:
         # Безопасно получаем description, преобразуем None в пустую строку
-        description_raw = transaction.get('description', '')
+        description_raw = transaction.get("description", "")
         if description_raw is None:
-            description_raw = ''
+            description_raw = ""
         description = description_raw.lower()
 
         # Проверяем каждую категорию
